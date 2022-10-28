@@ -1,5 +1,3 @@
-
-
 $IpAdress = "192.168.140.203"
 $Username = "JonathanFurrer"
 function setLight {
@@ -18,63 +16,58 @@ function setLight {
     }
 
     $uri =  "http://" + $IpAdress + "/color/0?turn="+$t+"&red="+$red+"&green="+$green+"&blue="+$blue
-    Write-Host $uri
-    Invoke-RestMethod -Method "get" -Uri $uri
-};
+    Invoke-RestMethod -Method "get" -Uri $uri > $null
+}
 
 while($true){
-    if ($IpAdress -like "*192.168.140*") {
+
         $logfilePath = "C:\Users\" + $Username + "\AppData\Roaming\Microsoft\Teams\logs.txt" 
-        $log = Get-Content $logfilePath -tail 1000
+        $log = Get-Content $logfilePath -tail 500
         $logString = [system.String]::Join(" ", $log)
         $lastIndex = $logString.LastIndexOf("StatusIndicatorStateService")
-        $laststat = $logString.Substring( $lastIndex + 35 , 12 )                   
-        Write-Host  $laststat               
+        $laststat = $logString.Substring( $lastIndex + 35 , 12 )                                 
         switch ($laststat)
         {
             {$_.contains("OnThePhone")} {
-                "OnThePhone"
+                #"OnThePhone"
                 setLight -red 10 -green 0 -blue 0 -turn 1 -IpAdress $IpAdress
             }
             {$_.contains("NewActivity")} {
-                "NewActivity"
+                #"NewActivity"
                 setLight -red 0 -green 0 -blue 0 -turn 0 -IpAdress $IpAdress
             }
             {$_.contains("Presenting")} {
-                "Presenting"
+                #"Presenting"
                 setLight -red 10 -green 0 -blue 0 -turn 1 -IpAdress $IpAdress
             }
             {$_.contains("Unknown")} {
-                "Unknown"
+                #"Unknown"
                 setLight -red 0 -green 0 -blue 0 -turn 0 -IpAdress $IpAdress
             }
             {$_.contains("Offline")} {
-                "Offline"
+                #"Offline"
                 setLight -red 0 -green 0 -blue 0 -turn 0 -IpAdress $IpAdress
             }
             {$_.contains("Away")} {
-                "Away"
+                #"Away"
                 setLight -red 0 -green 0 -blue 0 -turn 0 -IpAdress $IpAdress
             }
             {$_.contains("Available")} {
-                "Available"
+                #"Available"
                 setLight -red 0 -green 10 -blue 2 -turn 1 -IpAdress $IpAdress
             }
             {$_.contains("Busy")} {
-                "Busy"
+                #"Busy"
                 setLight -red 10 -green 10 -blue 0 -turn 1 -IpAdress $IpAdress
             }
             {$_.contains("DoNotDisturb")} {
-                "DoNotDisturb"  
+                #"DoNotDisturb"  
                 setLight -red 10 -green 0 -blue 0 -turn 1 -IpAdress $IpAdress
             } 
             {$_.contains("BeRightBack")} {
-                "BeRightBack"
+                #"BeRightBack"
                 setLight -red 0 -green 0 -blue 0 -turn 0 -IpAdress $IpAdress  
             }           
-        }
-    }else{
-        exit
     }
     Start-Sleep(60)
 }
