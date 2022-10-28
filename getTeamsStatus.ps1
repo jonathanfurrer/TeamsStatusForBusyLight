@@ -73,7 +73,8 @@ while($true){
                 setLight -red 0 -green 0 -blue 0 -turn 0 -IpAdress $IpAdress  
             }           
         }
+    }else{
+        exit
     }
-    
-    sleep(60)
+    Start-Sleep(60)
 }
